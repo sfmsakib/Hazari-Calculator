@@ -212,7 +212,7 @@ class DashboardFragment : Fragment() {
                 R.id.clear_record -> {
                     // User chose the "Favorite" action, mark the current item
                     Log.i("FUAD_LOG", "onOptionsItemSelected2")
-
+                    showClearDialog()
                     true
                 }
 
@@ -235,6 +235,22 @@ class DashboardFragment : Fragment() {
             .setCancelable(false)
             .setTopColor(requireContext().getColor(R.color.search_opaque))
             .setNeutralButton("ok") {}
+            .show()
+
+    }
+    private fun showClearDialog() {
+        AldebaranDialog(context)
+            .setTitle("Clear Data!")
+            .setMessage("Are you sure you want to delete all data?")
+            .setIcon(R.drawable.baseline_clear_all_24)
+            .setCancelable(false)
+            .setTopColor(requireContext().getColor(R.color.search_opaque))
+            .setPositiveButton("Yes") {
+                CoroutineScope(Dispatchers.IO).launch {
+                    database.ScoreDao().deleteAllScore()
+                }
+            }
+            .setNegativeButton("No"){}
             .show()
 
     }
